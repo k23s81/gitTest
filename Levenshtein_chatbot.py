@@ -13,20 +13,14 @@ class SimpleChatBot:
     # 레벤슈타인 거리 구하기
     def calc_distance(self, input_vector, question) :
         ''' 레벤슈타인 거리 계산하기 '''
-        a = input_vector
-        b = question
+        a = input_vector # 입력받은 질문
+        b = question # csv파일의 각 질문
+        
         if a == b: return 0 # 같으면 0을 반환
         a_len = len(a) # a 길이
         b_len = len(b) # b 길이
         if a == "": return b_len
         if b == "": return a_len
-        # 2차원 표 (a_len+1, b_len+1) 준비하기 --- (※1)
-        # matrix 초기화의 예 : [[0, 1, 2, 3], [1, 0, 0, 0, 0], [2, 0, 0, 0, 0], [3, 0, 0, 0, 0], [4, 0, 0, 0, 0]]
-        #      서 울 시
-        #   [0, 1, 2, 3]
-        # 서[1, 0, 0, 0]
-        # 울[2, 0, 0, 0]
-        # 시[3, 0, 0, 0] 
         matrix = [[] for i in range(a_len+1)] # 리스트 컴프리헨션을 사용하여 1차원 초기화
         for i in range(a_len+1): # 0으로 초기화
             matrix[i] = [0 for j in range(b_len+1)]  # 리스트 컴프리헨션을 사용하여 2차원 초기화
@@ -54,10 +48,10 @@ class SimpleChatBot:
         return matrix[a_len][b_len]
 
     def find_best_answer(self, input_sentence):
-        distance_list =[]
+        distance_list =[] # 입력질문과 csv파일의 모든 질문과의 레벤슈타인 거리를 계산해 넣을 리스트 선언
         for question in self.questions:
             similarities = self.calc_distance(input_sentence, question ) # 레벤슈타인 거리를 csv파일의 각 질문별로 계산
-            distance_list.append(similarities)
+            distance_list.append(similarities) # 계산된 레벤슈타인 거리를 리스트에 입력
         best_match_index = distance_list.index(min(distance_list))  # 레벤슈타인 거리가 가장 짧은 질문의 인덱스 확인
         return self.answers[best_match_index]  # 레벤슈타인 거리가 가장 짧은 질문의 답변 반환
 
